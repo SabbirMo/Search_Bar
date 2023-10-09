@@ -1,0 +1,30 @@
+private void SearchFilter() {
+
+        FilteredList<GuestList> filterDate = new FilteredList<>(guestLists, e->true);
+
+        textSearchBar.setOnKeyReleased(e->{
+
+
+
+            textSearchBar.textProperty().addListener((observableValue, s, t1) -> {
+                filterDate.setPredicate((Predicate<? super GuestList>) cust -> {
+                    if(t1 == null){
+                        return  true;
+                    }
+
+                    String toLowerCaseFilter = t1.toLowerCase();
+
+                    if(cust.getName().contains(t1)){
+                        return  true;
+                    } else if (cust.getDisCountOffer().contains(toLowerCaseFilter)) {
+                        return  true;
+                    }
+
+                    return false;
+                });
+            });
+            final SortedList<GuestList> costumers = new SortedList<>(filterDate);
+            costumers.comparatorProperty().bind(allGuestTableList.comparatorProperty());
+            allGuestTableList.setItems(costumers);
+        });
+    }
